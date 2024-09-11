@@ -1,0 +1,11 @@
+import pygame #importerer pygame
+pygame.init() #initialiserer pygame
+
+pygame.display.set_mode((600, 600)) #laver vinduet uret skal være på, med en given bredde og højde
+
+pygame.display.set_caption("Analogt ur") #Titel på vinduet
+
+pygame.draw.circle(display, (255,255,255),(300,300),200,0) #Urskiven ,først farve (hvid, så startposition (300,300), så radius, og sidst tykkelsen (0), som udfylder cirklen.
+
+#NÅET TIL TRIN 2
+

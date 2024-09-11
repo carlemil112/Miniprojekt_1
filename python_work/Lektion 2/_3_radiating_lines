@@ -1,0 +1,45 @@
+import pygame
+import math
+
+# Initialiser Pygame
+pygame.init()
+
+# Opsæt skærmen
+skærmstørrelse = (400, 400)
+skærm = pygame.display.set_mode(skærmstørrelse)
+pygame.display.set_caption('Radiating lines')
+
+# Farver
+sort = (0, 0, 0)
+hvid = (255, 255, 255)
+
+# Definer midten og radius
+center = (skærmstørrelse[0] // 2, skærmstørrelse[1] // 2)
+radius = 150
+
+# Funktion til at tegne strålelignende linjer
+def tegn_strålelignende_linjer():
+    for i in range(12):
+        vinkel = math.radians(i * 30)  # 360 grader delt med 12 linjer
+        x_slut = center[0] + radius * math.cos(vinkel)
+        y_slut = center[1] + radius * math.sin(vinkel)
+        pygame.draw.line(skærm, sort, center, (x_slut, y_slut), 5)
+
+# Hovedloop
+kørende = True
+while kørende:
+    skærm.fill(hvid)
+    
+    # Tegn linjerne
+    tegn_strålelignende_linjer()
+
+    # Opdater skærmen
+    pygame.display.flip()
+
+    # Event-håndtering for at afslutte programmet
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            kørende = False
+
+# Luk Pygame
+pygame.quit()
