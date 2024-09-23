@@ -1,11 +1,62 @@
 import pygame #importerer pygame
-pygame.init() #initialiserer pygame
+import math
+import datetime
 
-pygame.display.set_mode((600, 600)) #laver vinduet uret skal være på, med en given bredde og højde
+pygame.init()
 
-pygame.display.set_caption("Analogt ur") #Titel på vinduet
+screen_width, screen_height = 1000, 1000
+screen = pygame.display.set_mode((screen_width, screen_height))
+pygame.display.set_caption("Analogt Ur")
 
-pygame.draw.circle(display, (255,255,255),(300,300),200,0) #Urskiven ,først farve (hvid, så startposition (300,300), så radius, og sidst tykkelsen (0), som udfylder cirklen.
+white = (255, 255, 255)
+black = (0, 0, 0)
+red = (255, 0, 0)
+green = (0, 255, 0)
+blue = (0, 0, 255)
 
-#NÅET TIL TRIN 2
+clock_center = (screen_width // 2, screen_height // 2)
+clock_radius = 180
 
+
+clock = pygame.time.Clock()
+
+def get_time():
+    now = datetime.datetime.now()
+    return now.hour % 12, now.minute, now.second
+
+def draw_hand(angle, length, color, width):
+    end_x = clock_center[0] + length * math.cos(angle)
+    end_y = clock_center[1] - length * math.sin(angle)
+    pygame.draw.line(screen, color, clock_center, (end_x, end_y), width)
+
+
+#Main loop
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+    #Tid i timer, minut, sekund form:
+    hour, minute, second = get_time()
+
+    #Vinkler for hver viser (i radianer):
+    second_angle = math.radians((360/60) * second -90)
+    minute_angle = math.radians ((360/60) * minute - 90)
+    hour_angle = math.radians((360/12)*hour+(minute/60)*30-90)
+
+    #Tegn urskiven:
+    screen.fill(white)
+    pygame.draw.circle(screen, black, clock_center, clock_radius, 5)
+
+    #Tegn viserne:
+    draw_hand(second_angle, clock_radius - 20, red, 2) #Sekundviser
+    draw_hand(minute_angle, clock_radius - 40, blue, 4) #Minutviser
+    draw_hand(hour_angle, clock_radius - 60, green,6) #Timeviser
+
+    #Opdater skærmen:
+    pygame.display.flip()
+
+    #FPS (60 frames per sekund)
+    clock.tick(60)
+
+pygame.quit()
