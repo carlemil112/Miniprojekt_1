@@ -1,4 +1,4 @@
-import pygame #importerer pygame
+import pygame  # importerer pygame
 import math
 import datetime
 
@@ -11,52 +11,81 @@ pygame.display.set_caption("Analogt Ur")
 white = (255, 255, 255)
 black = (0, 0, 0)
 red = (255, 0, 0)
-green = (0, 255, 0)
 blue = (0, 0, 255)
 
 clock_center = (screen_width // 2, screen_height // 2)
 clock_radius = 180
-
-
 clock = pygame.time.Clock()
 
 def get_time():
     now = datetime.datetime.now()
     return now.hour % 12, now.minute, now.second
 
-def draw_hand(angle, length, color, width):
+def draw_hand(angle, length, color, width): #Definer viserne på analog ur
     end_x = clock_center[0] + length * math.cos(angle)
-    end_y = clock_center[1] - length * math.sin(angle)
+    end_y = clock_center[1] + length * math.sin(angle)  
     pygame.draw.line(screen, color, clock_center, (end_x, end_y), width)
 
 
-#Main loop
+def draw_markings(): #Definerer markeringerne på analog uret
+    d = 150
+    d2 = 25
+    for i in range(0, 360, 30):
+        x1 = screen_width // 2 + d * math.cos(math.radians(i))
+        y1 = screen_height // 2 + d * math.sin(math.radians(i))
+        x2 = x1 + d2 * math.cos(math.radians(i))
+        y2 = y1 + d2 * math.sin(math.radians(i))
+        pygame.draw.line(screen, (0, 0, 0), (x1, y1), (x2, y2), 5)
+
+def numbers(number, size, color, position): #Definerer tallene i digital uret
+    font = pygame.font.SysFont("DS-Digital", size, True, False)
+    text = font.render(number, True, color)
+    text_rect = text.get_rect(center=position)
+    screen.blit(text, text_rect)
+
+# Main loop
 running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    #Tid i timer, minut, sekund form:
+    # Tid i timer, minut, sekund form:
     hour, minute, second = get_time()
 
-    #Vinkler for hver viser (i radianer):
-    second_angle = math.radians((360/60) * second -90)
-    minute_angle = math.radians ((360/60) * minute - 90)
-    hour_angle = math.radians((360/12)*hour+(minute/60)*30-90)
+    # Vinkler for hver viser (i radianer):
+    second_angle = math.radians((360 / 60) * second - 90)
+    minute_angle = math.radians((360 / 60) * minute - 90)
+    hour_angle = math.radians((360 / 12) * hour + (minute / 60) * 30 - 90)
+    
 
-    #Tegn urskiven:
+    # Tegn urskiven:
     screen.fill(white)
     pygame.draw.circle(screen, black, clock_center, clock_radius, 5)
+    
+    #Tegn markeringerne for de 12 tal
+    draw_markings() 
 
-    #Tegn viserne:
-    draw_hand(second_angle, clock_radius - 20, red, 2) #Sekundviser
-    draw_hand(minute_angle, clock_radius - 40, blue, 4) #Minutviser
-    draw_hand(hour_angle, clock_radius - 60, green,6) #Timeviser
+    #Tegn rektangel til digitalur
+      
+    
+    # Tegn viserne:
+    draw_hand(second_angle, clock_radius - 20, red, 2)  # Sekundviser
+    draw_hand(minute_angle, clock_radius - 40, black, 4)  # Minutviser
+    draw_hand(hour_angle, clock_radius - 60, black, 6)  # Timeviser
 
-    #Opdater skærmen:
+    #Nuværende tid til digital ur
+    current_time = datetime.datetime.now() 
+    second = current_time.strftime('%S')
+    minute = current_time.strftime('%M')
+    hour = current_time.strftime('%I')
+
+    #Tegn digitaluret
+    numbers(f"{hour}:{minute}", 50, blue, (screen_width / 1.7, screen_height / 2)) 
+    
+    # Opdater skærmen:
     pygame.display.flip()
 
-    #FPS (60 frames per sekund)
+    # FPS (60 frames per sekund)
     clock.tick(60)
 
 pygame.quit()
