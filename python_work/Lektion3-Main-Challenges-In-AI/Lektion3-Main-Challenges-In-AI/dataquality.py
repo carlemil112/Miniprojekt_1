@@ -87,3 +87,8 @@ print(f"accuracy not scaled SVM: {accuracy_svm*100:.3f}"  + '%' + '\n'
       #f"accuracy not scaled RF: {accuracy_rf*100:.3f}"  + '%' + '\n'
       #f"accuracy scaled RF: {accuracy_scaled_rf*100:.3f}" + '%'))
 
+print(dataset.info()) #info om dataset
+
+dataset.hist(bins=20, figsize=(15, 10)) #Kode til at tegne histogram af datasæt
+
+plt.show() #vis histogrammet
