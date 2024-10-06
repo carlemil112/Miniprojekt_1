@@ -65,3 +65,10 @@ while True: #While loop der lader brugeren selv indtaste
 
 print(make_album('Kanye West', 'The College Dropout'))
 print(make_album('Lil Uzi Vert', 'Pink Tape', 17))
+
+age = 10
+
+if age == 9:
+    print("Du er 10 år gammel")
+else:
+    print("Du er ikke 10 år gammel")

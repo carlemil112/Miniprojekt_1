@@ -1,63 +1,18 @@
 import pygame
 import sys
 
-def create_grid(width, height):
-    grid = [[0 for _ in range(width)] for _ in range(height)]
-    return grid
+def create_grid():
+    grid = [[0 for i in range(48)]for i in range(64)] #64x48 grid fyldt med 0'er
+    return grid #Returnerer grid når man kører funktionen
 
-def draw_grid(screen, grid, block_size):
-    for y, row in enumerate(grid):
-        for x, cell in enumerate(row):
-            color = (0, 0, 0) if cell == 1 else (255, 255, 255)  # Sort for vægge, hvid for stier
-            pygame.draw.rect(screen, color, (x * block_size, y * block_size, block_size, block_size))
 
-def create_fixed_maze(grid):
-    width = len(grid[0])
-    height = len(grid)
+def main_function():
+    grid = create_grid()
 
-    # Tegn lodrette vægge på hver anden kolonne
-    for x in range(0, width, 2):
-        for y in range(height):
-            grid[y][x] = 1
+    for row in grid:
+        print(row)
+    
+main_function()
 
-    # Tilføj faste åbninger på bestemte rækker
-    for x in range(0, width, 2):
-        if x % 4 == 0:  # Tilføj åbninger i hver anden vægkolonne
-            grid[3][x] = 0  # Åbning på række 3
-            grid[7][x] = 0  # Åbning på række 7
-        else:
-            grid[5][x] = 0  # Åbning på række 5
-
-    return grid
-
-def main():
-    pygame.init()
-    screen = pygame.display.set_mode((640, 480))  # 64x48 grid med 10x10 blokke
-    pygame.display.set_caption("Fixed Maze Visualization")
-
-    grid = create_grid(64, 48)  # Opret grid 64x48
-
-    # Opret en fast labyrint uden tilfældige åbninger
-    grid = create_fixed_maze(grid)
-
-    block_size = 10  # Hver blok i labyrinten er 10x10 pixels
-
-    # Main loop
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-
-        screen.fill((255, 255, 255))  # Hvid baggrund
-
-        # Tegn labyrinten
-        draw_grid(screen, grid, block_size)
-
-        pygame.display.flip()  # Opdater skærmen
-
-    pygame.quit()
-    sys.exit()
-
-if __name__ == "__main__":
-    main()
+def grid_line():
+    line = [1]
