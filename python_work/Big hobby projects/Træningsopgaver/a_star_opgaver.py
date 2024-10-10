@@ -7,7 +7,6 @@ grid=[
 [(3,0), (3,1), (3,2), (3,3), (3,4)],
 [(4,0), (4,1), (4,2), (4,3), (4,4)]
 ]
+git add .
+git commit -m "Din besked om ændringen"
 
-for (x,y) in grid:
-    
-    if x == 0:
