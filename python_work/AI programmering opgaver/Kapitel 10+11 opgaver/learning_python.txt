@@ -1,0 +1,3 @@
+In Python you can loop through a whole list, and do the same command over and over with the keyword: for
+In Python you can print a string integer or something else with the keyword: print()
+In Python you can create a class to have a blueprint for making functions under that class, with the keyword: class

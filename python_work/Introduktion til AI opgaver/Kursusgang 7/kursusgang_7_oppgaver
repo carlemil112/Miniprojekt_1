@@ -1,0 +1,48 @@
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+import matplotlib.pyplot as plt
+
+# Load the dataset
+file_path = r"C:\Users\carle\Desktop\python_work\Introduktion til AI opgaver\Kursusgang 7\CO2data.csv"
+df = pd.read_csv(file_path)
+
+# Split the data into features (X) and target (y)
+X = df[['Weight', 'Volume']]  # Features (Weight and Volume)
+y = df['CO2']  # Target variable (CO2 emissions)
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Initialize the linear regression model
+model = LinearRegression()
+
+# Train the model using two features ('Weight' and 'Volume')
+model.fit(X_train, y_train)
+
+# Predict the CO2 emission for a car with weight 2300kg and volume 1300cm3
+new_car = [[2300, 1300]]
+predicted_co2 = model.predict(new_car)
+print(f"Predicted CO2 emission for a car with 2300kg weight and 1300cm³ volume: {predicted_co2[0]} g/km")
+
+# Visualize the regression line on the original data (Weight vs CO2)
+plt.scatter(df['Weight'], df['CO2'], color='blue', label='Actual data')
+
+# Generate predictions using the model for a range of weights (with a constant volume)
+weights = np.linspace(df['Weight'].min(), df['Weight'].max(), 100)
+volumes = np.full_like(weights, 1300)  # Assume constant volume (e.g., 1300cm3)
+predicted_co2_line = model.predict(np.column_stack([weights, volumes]))
+
+# Plot the regression line (Weight vs Predicted CO2)
+plt.plot(weights, predicted_co2_line, color='red', label='Regression line')
+
+# Add labels and title
+plt.xlabel('Weight (kg)')
+plt.ylabel('CO2 Emissions (g/km)')
+plt.title('Weight vs CO2 Emissions with Regression Line')
+plt.legend()
+
+# Show the plot
+plt.show()
