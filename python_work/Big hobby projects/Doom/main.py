@@ -3,6 +3,8 @@ import sys
 from settings import *
 from map import *
 from player import *
+from raycasting import *
+from object_renderer import *
 
 
 class Game:
@@ -17,17 +19,21 @@ class Game:
     def new_game(self):
         self.map = Map(self)
         self.player = Player(self)
+        self.object_renderer = ObjectRenderer(self)
+        self.raycasting = Raycasting(self)
 
     def update(self):
         self.player.update()
+        self.raycasting.update()
         pg.display.flip() #opdater skærmen
         self.delta_time = self.clock.tick(FPS) #Vis fps
         pg.display.set_caption(f' {self.clock.get_fps() :.1f}') #Vis fps PÅ skærmen
     
     def draw(self):
-        self.screen.fill('black') #gør skærmem sort hvis andet ikke oplyst
-        self.map.draw() #tegner kortet
-        self.player.draw() #tegner spiller
+        self.screen.fill('black') #gør skærmen sort hvis andet ikke oplyst
+        self.object_renderer.draw()
+       # self.map.draw() #tegner kortet
+       # self.player.draw() #tegner spiller
 
     def check_events(self): #begivenheder ved tryk på knapper
         for event in pg.event.get():
